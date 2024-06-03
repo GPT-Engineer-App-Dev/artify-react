@@ -1,21 +1,17 @@
 import { useState } from "react";
 import { Box, Container, Flex, Heading, VStack, Text, Spinner, Button } from "@chakra-ui/react";
 import { useEvents } from "../integrations/supabase/index.js";
-import { useSupabaseAuth, SupabaseAuthUI } from "../integrations/supabase/auth.jsx";
+import { useSupabaseAuth } from "../integrations/supabase/auth.jsx";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const { session, logout } = useSupabaseAuth();
-  const [showLogin, setShowLogin] = useState(false);
+  const navigate = useNavigate();
   const { data: events, error, isLoading } = useEvents();
 
   if (!session) {
-    return showLogin ? (
-      <SupabaseAuthUI />
-    ) : (
-      <Container maxW="container.xl" centerContent>
-        <Button onClick={() => setShowLogin(true)}>Login</Button>
-      </Container>
-    );
+    navigate("/login");
+    return null;
   }
 
   return (
